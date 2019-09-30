@@ -1,0 +1,10 @@
+{
+    "name": "webgpu-shader-compiler-loader",
+    "version": "0.0.1",
+    "main": "install.js",
+    "author": "Austin Eng <enga@chromium.org>",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/austinEng/webgpu-shader-compiler-loader.git"
+    }
+}
