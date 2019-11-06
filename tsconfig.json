@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "outDir": "./dist/",
+        "sourceMap": true,
+        "declaration": true,
+
+        /* Strict type-checking options */
+        "alwaysStrict": true,
+        "allowJs": false,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "strictBindCallApply": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "strictPropertyInitialization": true,
+
+        /* Module Options */
+        "module": "es6",
+        "moduleResolution": "node",
+        "esModuleInterop": false,
+    },
+    "include": [
+        "src/**/*.ts",
+        "node_modules/@webgpu/types/index.d.ts"
+    ],
+}
