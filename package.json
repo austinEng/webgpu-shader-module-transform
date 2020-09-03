@@ -1,7 +1,8 @@
 {
     "name": "webgpu-shader-module-transform",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "author": "Austin Eng <enga@chromium.org>",
     "repository": {
         "type": "git",
@@ -12,7 +13,7 @@
         "start": "webpack --watch"
     },
     "devDependencies": {
-        "@webgpu/types": "^0.0.15",
+        "@webgpu/types": "^0.0.31",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.2",
         "webpack": "^4.41.0",

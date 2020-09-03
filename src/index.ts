@@ -1,37 +1,30 @@
 
-export type GPUShaderSource = any;
-export type GPUShaderCode = Uint32Array;
+/// <reference types="@webgpu/types" />
 
-export interface GPUShaderModuleDescriptorWithTransform extends GPUShaderModuleDescriptor {
-    source: GPUShaderSource;
-    transform: (source: GPUShaderSource) => GPUShaderCode;
+export {};
+
+declare global {
+  export interface GPUDevice {
+    createShaderModule(descriptor: GPUShaderModuleDescriptor & {
+      transform?: (code: any) => GPUShaderModuleDescriptor["code"],
+    }): GPUShaderModule;
+  }
 }
 
-export interface GPUDeviceWithShaderModuleDescriptorTransform extends GPUDevice {
-    createShaderModule(descriptor: GPUShaderModuleDescriptorWithTransform): GPUShaderModule;
-}
-
-let originalCreateShaderModule: GPUDevice["createShaderModule"] = undefined!;
 if (navigator.gpu) {
-    // @ts-ignore
-    originalCreateShaderModule = GPUDevice.prototype.createShaderModule;
-}
+  const originalCreateShaderModule = GPUDevice.prototype.createShaderModule;
 
-const tmp: GPUShaderModuleDescriptor = { code: undefined!, label: undefined };
-
-function createShaderModule(this: GPUDeviceWithShaderModuleDescriptorTransform,
-                            desc: GPUShaderModuleDescriptorWithTransform): GPUShaderModule {
-    if (desc.transform && desc.source) {
-        tmp.code = desc.transform(desc.source);
-    } else {
-        tmp.code = desc.code;
+  GPUDevice.prototype.createShaderModule = function createShaderModule(
+    this: GPUDevice,
+    desc: Parameters<typeof originalCreateShaderModule>[0]
+  ): GPUShaderModule {
+    if (typeof desc.transform === 'function') {
+      desc = {
+        label: desc.label,
+        code: desc.transform(desc.code),
+        sourceMap: desc.sourceMap,
+      }
     }
-    return originalCreateShaderModule.call(this, tmp);
-}
-
-
-export default function install() {
-    if (!navigator.gpu || originalCreateShaderModule === createShaderModule) return;
-    // @ts-ignore
-    GPUDevice.prototype.createShaderModule = createShaderModule;
+    return originalCreateShaderModule!.call(this, desc);
+  };
 }

@@ -20,8 +20,4 @@
         "moduleResolution": "node",
         "esModuleInterop": false,
     },
-    "include": [
-        "src/**/*.ts",
-        "node_modules/@webgpu/types/index.d.ts"
-    ],
 }

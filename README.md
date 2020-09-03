@@ -2,16 +2,14 @@
 
 ## Overview
 
-`webgpu-shader-module-transform` is a light polyfill which extends the `GPUShaderModuleDescriptor` of the [WebGPU API](https://gpuweb.github.io/gpuweb/) to support `source` and `transform` arguments.
+`webgpu-shader-module-transform` is a light polyfill which extends the `GPUShaderModuleDescriptor` of the [WebGPU API](https://gpuweb.github.io/gpuweb/) to support an optional `transform` member.
 
 ```typescript
-type GPUShaderSource = any;
-type GPUShaderCode = Uint32Array;
-
-interface GPUShaderModuleDescriptorWithTransform extends GPUShaderModuleDescriptor {
-    source: GPUShaderSource;
-    transform: (source: GPUShaderSource) => GPUShaderCode;
+interface GPUDevice {
+  createShaderModule(descriptor: GPUShaderModuleDescriptor & {
+    transform?: (code: any) => GPUShaderModuleDescriptor["code"],
+  }): GPUShaderModule;
 }
 ```
 
-If `source` and `transform` are provided in a call to `GPUDevice.createShaderModule`, `transform` is invoked on `source` and set as the `code` member of the `GPUShaderModuleDescriptor`.
+If `transform` is provided in a call to `GPUDevice.createShaderModule`, `transform` is invoked on `code` and the result is replaced as the `code` member of the `GPUShaderModuleDescriptor`.
